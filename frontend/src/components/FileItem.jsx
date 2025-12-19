@@ -22,10 +22,7 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
 
   const canPreview =
     file.mimeType.startsWith("image/") ||
-    file.mimeType === "application/pdf" ||
-    file.mimeType.includes("officedocument") ||
-    file.mimeType.includes("msword") ||
-    file.mimeType.includes("powerpoint");
+    file.mimeType === "application/pdf";
 
   const btnStyle = {
     background: "#2a2a2a",
@@ -38,22 +35,14 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
   };
 
   return (
-    <div
-      style={{
-        borderBottom: "1px solid #333",
-        padding: "14px 0",
-      }}
-    >
-      {/* File name */}
+    <div style={{ borderBottom: "1px solid #333", padding: "14px 0" }}>
       <strong style={{ color: "#fff" }}>{file.originalName}</strong>
 
-      {/* Metadata */}
       <div style={{ fontSize: "14px", color: "#aaa", marginTop: "4px" }}>
         {formatSize(file.size)} • {getFileType(file.mimeType)} • Uploaded{" "}
         {formatDate(file.uploadedAt)}
       </div>
 
-      {/* Thumbnail preview for images */}
       {file.mimeType.startsWith("image/") && (
         <img
           src={`${BASE_URL}${file.path}`}
@@ -63,10 +52,17 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
         />
       )}
 
-      {/* Actions */}
       <div style={{ marginTop: "10px" }}>
         {canPreview && (
-          <button style={btnStyle} onClick={() => onPreview(file)}>
+          <button
+            style={btnStyle}
+            onClick={() =>
+              onPreview({
+                ...file,
+                url: `${BASE_URL}${file.path}`,
+              })
+            }
+          >
             👁 Preview
           </button>
         )}

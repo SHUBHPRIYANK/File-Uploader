@@ -1,6 +1,6 @@
 import FileItem from "./FileItem";
 
-export default function FileList({ files, onDelete, onDownload, onPreview }) {
+export default function FileList({ files = [], onDelete, onDownload, onPreview }) {
   if (!files.length) {
     return (
       <p style={{ color: "#777", textAlign: "center", marginTop: "20px" }}>
@@ -16,23 +16,21 @@ export default function FileList({ files, onDelete, onDownload, onPreview }) {
           color: "#eee",
           borderBottom: "1px solid #333",
           paddingBottom: "8px",
-          marginBottom: "15px"
+          marginBottom: "15px",
         }}
       >
         📂 Your Files
       </h3>
 
-      <div>
-        {files.map((file) => (
-          <FileItem
-            key={file.id}
-            file={file}
-            onDelete={onDelete}
-            onDownload={onDownload}
-            onPreview={onPreview}
-          />
-        ))}
-      </div>
+      {files.map((file) => (
+        <FileItem
+          key={file.id}
+          file={file}
+          onDelete={onDelete}
+          onDownload={onDownload}
+          onPreview={onPreview}   {/* passes preview handler */}
+        />
+      ))}
     </div>
   );
 }
