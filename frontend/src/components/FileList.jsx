@@ -28,7 +28,7 @@ export default function FileList({ files = [], onDelete, onDownload, onPreview }
           file={file}
           onDelete={onDelete}
           onDownload={onDownload}
-          onPreview={onPreview}   {/* passes preview handler */}
+          onPreview={onPreview}
         />
       ))}
     </div>
