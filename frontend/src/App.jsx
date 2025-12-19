@@ -16,7 +16,7 @@ export default function App() {
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState("");
 
-  // 🔹 NEW: preview modal state
+  // 🔹 Preview modal state
   const [previewFile, setPreviewFile] = useState(null);
 
   // Load files on mount
@@ -63,20 +63,19 @@ export default function App() {
 
   return (
     <div
-  style={{
-    maxWidth: "700px",
-    margin: "40px auto",
-    background: "#121212",
-    color: "#e0e0e0",
-    padding: "30px",
-    borderRadius: "10px",
-    boxShadow: "0 0 20px rgba(0,0,0,0.6)"
-  }}
->
+      style={{
+        maxWidth: "700px",
+        margin: "40px auto",
+        background: "#121212",
+        color: "#e0e0e0",
+        padding: "30px",
+        borderRadius: "10px",
+        boxShadow: "0 0 20px rgba(0,0,0,0.6)"
+      }}
+    >
       <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-          📁 File Uploader
+        📁 File Uploader
       </h2>
-
 
       <UploadArea onUpload={handleUpload} uploading={uploading} />
 
@@ -84,7 +83,6 @@ export default function App() {
 
       {status && <p>{status}</p>}
 
-      {/* 🔹 Pass preview handler */}
       <FileList
         files={files}
         onDelete={handleDelete}
@@ -110,26 +108,29 @@ export default function App() {
               background: "#fff",
               padding: 20,
               borderRadius: 6,
-              maxWidth: "80%"
+              maxWidth: "80%",
+              maxHeight: "80vh",
+              overflow: "auto"
             }}
           >
             <h4>{previewFile.originalName}</h4>
 
+            {/* ✅ Image preview */}
             {previewFile.mimeType.startsWith("image/") ? (
               <img
-                src={`http://localhost:3000${previewFile.path}`}
+                src={previewFile.url}
                 alt={previewFile.originalName}
                 style={{ maxWidth: "100%", maxHeight: "70vh" }}
               />
-            ) : previewFile.mimeType === "application/pdf" ? (
+            ) : (
+              /* ✅ All other files via iframe */
               <iframe
-                src={`http://localhost:3000${previewFile.path}`}
+                src={previewFile.url}
                 width="100%"
                 height="500px"
-                title="PDF Preview"
+                title="File Preview"
+                style={{ border: "1px solid #ccc" }}
               />
-            ) : (
-              <p>No preview available for this file type.</p>
             )}
 
             <div style={{ marginTop: 10, textAlign: "right" }}>

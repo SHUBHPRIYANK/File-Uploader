@@ -17,12 +17,9 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
   const getFileType = (mimeType) => {
     if (mimeType.startsWith("image/")) return "Image";
     if (mimeType === "application/pdf") return "PDF";
+    if (mimeType.startsWith("text/")) return "Text";
     return "Document";
   };
-
-  const canPreview =
-    file.mimeType.startsWith("image/") ||
-    file.mimeType === "application/pdf";
 
   const btnStyle = {
     background: "#2a2a2a",
@@ -34,41 +31,48 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
     marginRight: "6px",
   };
 
+  const fileUrl = `${BASE_URL}${file.path}`;
+
   return (
     <div style={{ borderBottom: "1px solid #333", padding: "14px 0" }}>
+      {/* File name */}
       <strong style={{ color: "#fff" }}>{file.originalName}</strong>
 
+      {/* Meta */}
       <div style={{ fontSize: "14px", color: "#aaa", marginTop: "4px" }}>
         {formatSize(file.size)} • {getFileType(file.mimeType)} • Uploaded{" "}
         {formatDate(file.uploadedAt)}
       </div>
 
+      {/* Image thumbnail */}
       {file.mimeType.startsWith("image/") && (
         <img
-          src={`${BASE_URL}${file.path}`}
+          src={fileUrl}
           alt={file.originalName}
           width="80"
           style={{ borderRadius: "4px", marginTop: "6px" }}
         />
       )}
 
+      {/* Actions */}
       <div style={{ marginTop: "10px" }}>
-        {canPreview && (
-          <button
-            style={btnStyle}
-            onClick={() =>
-              onPreview({
-                ...file,
-                url: `${BASE_URL}${file.path}`,
-              })
-            }
-          >
-            👁 Preview
-          </button>
-        )}
+        {/* ✅ Preview for ALL files */}
+        <button
+          style={btnStyle}
+          onClick={() =>
+            onPreview({
+              ...file,
+              url: fileUrl,
+            })
+          }
+        >
+          👁 Preview
+        </button>
+
         <button style={btnStyle} onClick={() => onDownload(file.id)}>
           ⬇ Download
         </button>
+
         <button style={btnStyle} onClick={() => onDelete(file.id)}>
           🗑 Delete
         </button>
