@@ -1,6 +1,6 @@
 const { v4: uuid } = require('uuid');
 
-const files = []; // in-memory (DB later)
+const files = []; 
 
 function createFile(file) {
   const record = {

@@ -15,9 +15,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // API routes
 app.use("/api/files", fileRoutes);
 
-// health check
 app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
+  res.send("Backend is running ");
 });
 
 const PORT = process.env.PORT || 8080;
