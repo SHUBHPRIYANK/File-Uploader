@@ -2,25 +2,25 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-const app = express(); // ✅ define app
+const fileRoutes = require("./src/routes/file.routes");
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// serve uploads folder
+// serve backend/uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// routes
-const fileRoutes = require("./src/routes/file.routes");
-app.use("/files", fileRoutes);
+// API routes
+app.use("/api/files", fileRoutes);
 
 // health check
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-const PORT = process.env.PORT || 3000;
-
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
