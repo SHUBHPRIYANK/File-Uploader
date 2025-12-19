@@ -1,3 +1,5 @@
+const BASE_URL = "https://file-uploader-production-6b15.up.railway.app";
+
 export default function FileItem({ file, onDelete, onDownload, onPreview }) {
   const formatSize = (bytes) => {
     if (bytes < 1024) return `${bytes} B`;
@@ -9,7 +11,7 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
     new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
-      day: "numeric"
+      day: "numeric",
     });
 
   const getFileType = (mimeType) => {
@@ -19,12 +21,11 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
   };
 
   const canPreview =
-  file.mimeType.startsWith("image/") ||
-  file.mimeType === "application/pdf" ||
-  file.mimeType.includes("officedocument") ||
-  file.mimeType.includes("msword") ||
-  file.mimeType.includes("powerpoint");
-
+    file.mimeType.startsWith("image/") ||
+    file.mimeType === "application/pdf" ||
+    file.mimeType.includes("officedocument") ||
+    file.mimeType.includes("msword") ||
+    file.mimeType.includes("powerpoint");
 
   const btnStyle = {
     background: "#2a2a2a",
@@ -33,14 +34,14 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
     padding: "6px 10px",
     borderRadius: "4px",
     cursor: "pointer",
-    marginRight: "6px"
+    marginRight: "6px",
   };
 
   return (
     <div
       style={{
         borderBottom: "1px solid #333",
-        padding: "14px 0"
+        padding: "14px 0",
       }}
     >
       {/* File name */}
@@ -48,15 +49,14 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
 
       {/* Metadata */}
       <div style={{ fontSize: "14px", color: "#aaa", marginTop: "4px" }}>
-        {formatSize(file.size)} •{" "}
-        {getFileType(file.mimeType)} •{" "}
-        Uploaded {formatDate(file.uploadedAt)}
+        {formatSize(file.size)} • {getFileType(file.mimeType)} • Uploaded{" "}
+        {formatDate(file.uploadedAt)}
       </div>
 
-      {/* Thumbnail */}
+      {/* Thumbnail preview for images */}
       {file.mimeType.startsWith("image/") && (
         <img
-          src={`http://localhost:3000${file.path}`}
+          src={`${BASE_URL}${file.path}`}
           alt={file.originalName}
           width="80"
           style={{ borderRadius: "4px", marginTop: "6px" }}
@@ -66,23 +66,14 @@ export default function FileItem({ file, onDelete, onDownload, onPreview }) {
       {/* Actions */}
       <div style={{ marginTop: "10px" }}>
         {canPreview && (
-          <button
-            style={btnStyle}
-            onClick={() => onPreview(file)}
-          >
+          <button style={btnStyle} onClick={() => onPreview(file)}>
             👁 Preview
           </button>
         )}
-        <button
-          style={btnStyle}
-          onClick={() => onDownload(file.id)}
-        >
+        <button style={btnStyle} onClick={() => onDownload(file.id)}>
           ⬇ Download
         </button>
-        <button
-          style={btnStyle}
-          onClick={() => onDelete(file.id)}
-        >
+        <button style={btnStyle} onClick={() => onDelete(file.id)}>
           🗑 Delete
         </button>
       </div>
