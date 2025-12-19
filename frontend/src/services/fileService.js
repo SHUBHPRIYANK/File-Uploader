@@ -1,35 +1,47 @@
 import axios from "axios";
 
-const API_BASE = "http://localhost:3000/api/files";
+const API = axios.create({
+  baseURL: "https://file-uploader-production-6b15.up.railway.app",
+});
 
+// Upload single file
 export const uploadSingleFile = (file, onProgress) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  return axios.post(API_BASE, formData, {
+  return API.post("/api/files", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: (e) => {
       const percent = Math.round((e.loaded * 100) / e.total);
       onProgress(percent);
-    }
+    },
   });
 };
 
+// Upload multiple files
 export const uploadMultipleFiles = (files, onProgress) => {
   const formData = new FormData();
-  files.forEach(file => formData.append("files", file));
+  files.forEach((f) => formData.append("files", f));
 
-  return axios.post(`${API_BASE}/batch`, formData, {
+  return API.post("/api/files/batch", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: (e) => {
       const percent = Math.round((e.loaded * 100) / e.total);
       onProgress(percent);
-    }
+    },
   });
 };
 
-export const getAllFiles = () => axios.get(API_BASE);
+// Get all files
+export const getAllFiles = () => API.get("/api/files");
 
-export const deleteFile = (id) =>
-  axios.delete(`${API_BASE}/${id}`);
+// Delete file
+export const deleteFile = (id) => API.delete(`/api/files/${id}`);
 
-export const downloadFile = (id) =>
-  window.open(`${API_BASE}/${id}/download`, "_blank");
+// Download file
+export const downloadFile = (id) => {
+  window.open(
+    `https://file-uploader-production-6b15.up.railway.app/api/files/${id}/download`,
+    "_blank"
+  );
+};
